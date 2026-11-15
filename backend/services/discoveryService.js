@@ -1,3 +1,4 @@
+import {ENGLISH_DISCOVERY_PROMPT} from './discoveryPrompts.js';
 import {generateContent} from './geminiClient.js';
 const STR={type:'STRING'};
 const DISCOVERY_SCHEMA={type:'OBJECT',required:['summary','places'],properties:{summary:STR,places:{type:'ARRAY',minItems:1,maxItems:6,items:{type:'OBJECT',required:['name','country','countryCode','region','latitude','longitude','rationale','reasonTitle','imageCaption','bestFor','accessCaveat'],properties:{name:STR,country:STR,countryCode:STR,region:STR,latitude:{type:'NUMBER'},longitude:{type:'NUMBER'},rationale:STR,reasonTitle:STR,imageCaption:STR,bestFor:STR,accessCaveat:STR}}}}};
@@ -10,7 +11,7 @@ export function discoverPlaces(jobId,request,signal){
  const promise=run(request,signal);attempts.set(jobId,promise);return promise;
 }
 async function run(request,signal){
- const body={systemInstruction:{parts:[{text:SYSTEM}]},contents:[{role:'user',parts:[{text:JSON.stringify({mission:request.mission,objectives:request.objectives,focus:request.focus,criteria:request.criteria,month:request.month,bounds:request.bounds,includePolar:request.includePolar,maximumPlaces:6})}]}],generationConfig:{responseMimeType:'application/json',responseSchema:DISCOVERY_SCHEMA,maxOutputTokens:6144,thinkingConfig:{thinkingLevel:'low'}}};
+ const body={systemInstruction:{parts:[{text:request.language==='en'?ENGLISH_DISCOVERY_PROMPT:SYSTEM+' Respondé completamente en español.'}]},contents:[{role:'user',parts:[{text:JSON.stringify({language:request.language||'es',mission:request.mission,objectives:request.objectives,focus:request.focus,criteria:request.criteria,month:request.month,bounds:request.bounds,includePolar:request.includePolar,maximumPlaces:6})}]}],generationConfig:{responseMimeType:'application/json',responseSchema:DISCOVERY_SCHEMA,maxOutputTokens:6144,thinkingConfig:{thinkingLevel:'low'}}};
  const {data,model,inputBytes}=await generateContent({body,signal,maxInputBytes:16000});
  const candidate=data.candidates?.[0];
  if(candidate?.finishReason!=='STOP')throw failure('Gemini no completó el descubrimiento de lugares. No se reintentó.');
@@ -26,5 +27,5 @@ async function run(request,signal){
   places.push({name,country,countryCode:typeof p.countryCode==='string'&&/^[a-z]{2}$/i.test(p.countryCode)?p.countryCode.toUpperCase():null,region,latitude:lat,longitude:lon,rationale:bounded(p.rationale,900),reasonTitle:bounded(p.reasonTitle,130),imageCaption:bounded(p.imageCaption,300),bestFor:bounded(p.bestFor,180),accessCaveat:bounded(p.accessCaveat,600),sourceUrls:[],proposalStatus:'unverified-model-proposal',coordinateStatus:'Coordenada aproximada propuesta por Gemini; no polígono validado de ensayo'});
  }
  if(!places.length)throw failure('Las propuestas de Gemini quedaron fuera del área elegida. No se usó una malla como reemplazo.');
- return {model,summary:bounded(output.summary,1200),places,rejections,mode:'model-proposals',grounded:false,sources:[],inputBytes,usage:data.usageMetadata||null,calls:1,createdAt:new Date().toISOString(),note:'Propuestas del modelo sin búsqueda web ni referencias verificadas. Las APIs contrastan después las condiciones y los límites administrativos, no el nombre exacto del sitio ni su acceso.'};
+ return {model,summary:bounded(output.summary,1200),places,rejections,language:request.language||'es',mode:'model-proposals',grounded:false,sources:[],inputBytes,usage:data.usageMetadata||null,calls:1,createdAt:new Date().toISOString(),note:'Propuestas del modelo sin búsqueda web ni referencias verificadas. Las APIs contrastan después las condiciones y los límites administrativos, no el nombre exacto del sitio ni su acceso.'};
 }

@@ -143,3 +143,8 @@ details > .search-summary { padding-top:24px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; }
 }
+
+.language-switch{position:fixed;top:16px;right:20px;z-index:1500;display:inline-flex;align-items:center;gap:7px;padding:9px 13px;border:1px solid #ffffff66;border-radius:5px;background:#1d3029ed;color:#fff;font-size:12px;font-weight:500;box-shadow:0 2px 10px #0002;cursor:pointer;transition:background .15s}
+.language-switch:hover{background:#355042}.language-switch:focus-visible{outline:3px solid #c8e59d;outline-offset:3px}
+.app-header .header-inner{padding-right:150px}
+@media(max-width:650px){.language-switch{top:14px;right:12px;padding:8px 10px;font-size:11px}.app-header .header-inner{padding-right:122px;flex-wrap:wrap}.app-header .journey-header-label{display:none}.app-header .brand{font-size:19px}}

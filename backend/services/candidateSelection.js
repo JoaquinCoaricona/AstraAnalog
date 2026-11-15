@@ -24,9 +24,9 @@ export function seasonFor(point,request){
   const values={...month,slope:point.terrain.estimatedSlope};
   return {month:month.month,values,deviation:deviation(values,request.criteria,request.focus),focus:focusValue(values,request)};
  }).filter(m=>finite(m.deviation)&&finite(m.focus)).sort((a,b)=>a.deviation-b.deviation||a.focus-b.focus||a.month-b.month);
- if(!months.length)return {status:'unavailable',bestMonth:null,months:[],reason:'No hay datos mensuales suficientes.'};
+ if(!months.length)return {status:'unavailable',bestMonth:null,months:[],reason:request.language==='en'?'Not enough monthly data.':'No hay datos mensuales suficientes.'};
  const exact=months.filter(m=>m.deviation===0);
- return {status:exact.length?'matches':'closest',bestMonth:months[0].month,months:months.slice(0,3).map(({focus,...m})=>m),matchingMonths:exact.map(m=>m.month),reason:exact.length?'Meses que cumplen los umbrales; el orden favorece tu condición principal.':'Ningún mes cumple todo. Se muestran los más cercanos con su desviación, sin cambiar tus requisitos.'};
+ return {status:exact.length?'matches':'closest',bestMonth:months[0].month,months:months.slice(0,3).map(({focus,...m})=>m),matchingMonths:exact.map(m=>m.month),reason:request.language==='en'?(exact.length?'Months meeting your thresholds, ranked by your main priority.':'No month meets all requirements. The closest months are shown without changing your requirements.'):exact.length?'Meses que cumplen los umbrales; el orden favorece tu condición principal.':'Ningún mes cumple todo. Se muestran los más cercanos con su desviación, sin cambiar tus requisitos.'};
 }
 export function selectCandidates(job){
  const exact=job.results||[];
@@ -46,6 +46,6 @@ export function selectCandidates(job){
   const passed=(point.checks||[]).filter(c=>c.pass).length;
   return {...point,values,passed,missingRequirements:missing,requirementDeviation:distance};
  }).filter(p=>(p.checks||[]).some(c=>finite(c.value))||Object.values(p.values).some(finite)).sort((a,b)=>a.missingRequirements-b.missingRequirements||a.requirementDeviation-b.requirementDeviation||b.passed-a.passed||a.id.localeCompare(b.id)).slice(0,3);
- const candidates=(exact.length?exact:closest).map(p=>({...p,location:p.location?.label?p.location:geographicLocation(p.coordinates),requirementDeviation:p.requirementDeviation??0,season:p.months&&p.terrain?seasonFor(p,job.request):{status:'unavailable',bestMonth:null,months:[],reason:'Sin serie mensual para este punto.'}}));
+ const candidates=(exact.length?exact:closest).map(p=>({...p,location:p.location?.label?p.location:geographicLocation(p.coordinates),requirementDeviation:p.requirementDeviation??0,season:p.months&&p.terrain?seasonFor(p,job.request):{status:'unavailable',bestMonth:null,months:[],reason:job.request.language==='en'?'No monthly series is available for this point.':'Sin serie mensual para este punto.'}}));
  return {candidates,recommendationMode:exact.length?'exact':candidates.length?'closest':'unavailable'};
 }

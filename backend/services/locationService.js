@@ -17,19 +17,19 @@ async function load(){
  })).then(values=>values.map(v=>v.status==='fulfilled'?v.value:[]));}
  return datasets;
 }
-export function geographicLocation([lat,lon]){
- if(lat<=-60){const sector=`Sector ${Math.abs(lon).toFixed(1)}° ${lon<0?'O':'E'}`;return {country:null,territory:'Antártida',region:sector,label:`Antártida · ${sector}`,status:'geographic',source:'Clasificación geográfica del punto terrestre antártico',note:'La Antártida no es un país ni tiene provincias de soberanía universalmente reconocida. El sector indica longitud, no una división administrativa.'};}
+export function geographicLocation([lat,lon],language='es'){
+ if(lat<=-60){const sector=`Sector ${Math.abs(lon).toFixed(1)}° ${lon<0?(language==='en'?'W':'O'):'E'}`;const territory=language==='en'?'Antarctica':'Antártida';return {country:null,territory,region:sector,label:`${territory} · ${sector}`,status:'geographic',source:'Clasificación geográfica del punto terrestre antártico',note:'La Antártida no es un país ni tiene provincias de soberanía universalmente reconocida. El sector indica longitud, no una división administrativa.'};}
  return {country:null,region:null,territory:null,label:null,status:'unavailable',source:'Natural Earth',note:'No se dispone de identificación administrativa para el punto. La IA puede sugerir una región amplia, marcada como aproximada.'};
 }
-export async function resolveLocation(coordinates){
- const key=coordinates.join(',');if(cache.has(key))return cache.get(key);
- const fallback=geographicLocation(coordinates);if(fallback.status==='geographic')return fallback;
+export async function resolveLocation(coordinates,language='es'){
+ const key=language+':'+coordinates.join(',');if(cache.has(key))return cache.get(key);
+ const fallback=geographicLocation(coordinates,language);if(fallback.status==='geographic')return fallback;
  try{
   const [countries,regions]=await load(),[lat,lon]=coordinates,point=[lon,lat];
   const country=countries.find(f=>contains(f.geometry,point))?.properties;
   const region=regions.find(f=>contains(f.geometry,point))?.properties;
-  const countryName=country?.NAME_ES||country?.name_es||country?.ADMIN||country?.admin||country?.NAME||country?.name||region?.admin||null;
-  const regionName=region?.name_es||region?.name||region?.NAME||null;
+  const countryName=language==='en'?(country?.NAME_EN||country?.name_en||country?.ADMIN||country?.admin||country?.NAME||country?.name||region?.admin||null):(country?.NAME_ES||country?.name_es||country?.ADMIN||country?.admin||country?.NAME||country?.name||region?.admin||null);
+  const regionName=language==='en'?(region?.name_en||region?.name||region?.NAME||null):(region?.name_es||region?.name||region?.NAME||null);
   const result={...fallback,country:countryName,region:regionName,label:[regionName,countryName].filter(Boolean).join(', ')||null,status:countryName?'approximate':'unavailable',source:'Natural Earth · países y subdivisiones',sourceUrl:'https://www.naturalearthdata.com/',note:'Identificación aproximada por polígonos administrativos; fronteras e islas pueden diferir de otras fuentes.'};
   if(result.label)cache.set(key,result);if(cache.size>500)cache.delete(cache.keys().next().value);return result;
  }catch{return fallback;}

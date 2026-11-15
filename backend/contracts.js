@@ -1,1 +1,1 @@
-export const AI_CONTRACT='astra-release-20261115-9';
+export const AI_CONTRACT='astra-bilingual-20261115-10';
