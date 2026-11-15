@@ -1,0 +1,10 @@
+{
+  "name": "astraanalog",
+  "private": true,
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm --prefix frontend run build",
+    "test": "node --test backend/test/*.test.js",
+    "start": "node backend/server.js --production"
+  }
+}

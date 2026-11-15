@@ -1,0 +1,2 @@
+const icons={'mars-rover':'🚀','lunar-rover':'🌙','surface-station':'🛰️',robotics:'🤖',wind:'💨',cold:'❄️',dry:'☀️',slopes:'⛰️',global:'🌍','south-america':'🌎',africa:'🌍',asia:'🌏',europe:'🗺️','north-america':'🌎',oceania:'🌏',month:'📅',slopeMin:'⛰️',slopeMax:'⛰️'};
+export default function OptionIcon({id}){return <span className={`option-visual option-visual-${id}`} aria-hidden="true">{icons[id]||'🔎'}</span>;}

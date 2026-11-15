@@ -1,0 +1,55 @@
+{
+  "project": "AstraAnalog",
+  "preparedOn": "2026-11-15",
+  "status": "draft_for_submission_not_submitted",
+  "codeAndDocumentation": {
+    "siAssisted": true,
+    "tools": ["OpenAI Codex", "ChatGPT"],
+    "uses": ["conceptualization", "coding", "refactoring", "writing", "documentation"]
+  },
+  "runtimeInterpretation": {
+    "provider": "Google Gemini API",
+    "uses": ["candidate discovery with Google Search references", "interpretation of externally sourced measurements"],
+    "scientificMeasurementSource": false,
+    "latestPipelineEndToEndVerifiedForThisDraft": false
+  },
+  "generatedVideo": {
+    "siGenerated": true,
+    "confirmedBy": "project owner",
+    "generationTool": null,
+    "generationToolStatus": "awaiting owner confirmation",
+    "purpose": "artistic landing page background; not scientific evidence",
+    "assets": [
+      "frontend/media-source/PortadaAstraAnalog.mp4",
+      "frontend/public/media/astra-pendulum-1280.mp4",
+      "frontend/public/media/astra-pendulum-768.mp4"
+    ],
+    "visibleDisclosureRequiredBySuppliedForm": true,
+    "visibleDisclosureAddedByThisTask": false,
+    "embeddedWatermarkVerified": false
+  },
+  "generatedImageDerivative": {
+    "asset": "frontend/public/media/astra-poster.jpg",
+    "origin": "frame extracted from SI-generated landing video",
+    "visibleDisclosureAddedByThisTask": false
+  },
+  "syntheticDevelopmentCatalogs": {
+    "siAssisted": true,
+    "scope": "early illustrative prototype data; not externally measured scientific values",
+    "usedByCurrentJourney": false,
+    "files": ["backend/data.js", "backend/sites.json", "backend/globalSites.json", "backend/testingCatalog.json"]
+  },
+  "externalScientificData": {
+    "siGenerated": false,
+    "sources": ["NASA POWER climatology", "Copernicus DEM GLO-90 via Open-Meteo Elevation API"]
+  },
+  "externalVisualAndGeographicResources": {
+    "siGeneratedByProject": false,
+    "sources": ["NASA Terra ASTER Namibia Dunes", "NASA Terra/Aqua MODIS Mosaic of Antarctica", "Esri World Imagery", "OpenStreetMap", "Natural Earth"]
+  },
+  "notes": [
+    "Documentary acknowledgement does not add a visible watermark to media.",
+    "No credentials or API keys are included in these metadata.",
+    "No form was submitted by this task."
+  ]
+}

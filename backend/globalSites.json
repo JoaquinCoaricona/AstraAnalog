@@ -1,0 +1,170 @@
+[
+  {
+    "id": "atacama",
+    "name": "Desierto de Atacama",
+    "country": "Chile",
+    "coordinates": [
+      -24.5,
+      -69.25
+    ],
+    "slope": 4,
+    "ndvi": 0.01,
+    "soilType": "Salino",
+    "roughness": "Media",
+    "referenceProfile": "salar-arizaro"
+  },
+  {
+    "id": "mojave",
+    "name": "Desierto de Mojave",
+    "country": "Estados Unidos",
+    "coordinates": [
+      35,
+      -115.5
+    ],
+    "slope": 6,
+    "ndvi": 0.1,
+    "soilType": "Arenoso",
+    "roughness": "Media",
+    "referenceProfile": "salar-arizaro"
+  },
+  {
+    "id": "death-valley",
+    "name": "Death Valley",
+    "country": "Estados Unidos",
+    "coordinates": [
+      36.24,
+      -116.82
+    ],
+    "slope": 2,
+    "ndvi": 0.02,
+    "soilType": "Salino",
+    "roughness": "Baja",
+    "referenceProfile": "salar-arizaro"
+  },
+  {
+    "id": "mauna-loa",
+    "name": "Entorno de Mauna Loa",
+    "country": "Estados Unidos",
+    "coordinates": [
+      19.54,
+      -155.58
+    ],
+    "slope": 15,
+    "ndvi": 0.04,
+    "soilType": "Basáltico",
+    "roughness": "Alta",
+    "referenceProfile": "la-payunia"
+  },
+  {
+    "id": "holuhraun",
+    "name": "Holuhraun",
+    "country": "Islandia",
+    "coordinates": [
+      64.87,
+      -16.83
+    ],
+    "slope": 7,
+    "ndvi": 0.02,
+    "soilType": "Basáltico",
+    "roughness": "Alta",
+    "referenceProfile": "la-payunia"
+  },
+  {
+    "id": "haughton",
+    "name": "Cráter Haughton",
+    "country": "Canadá",
+    "coordinates": [
+      75.38,
+      -89.67
+    ],
+    "slope": 12,
+    "ndvi": 0.02,
+    "soilType": "Roca de impacto",
+    "roughness": "Alta",
+    "referenceProfile": "llullaillaco"
+  },
+  {
+    "id": "wadi-rum",
+    "name": "Wadi Rum",
+    "country": "Jordania",
+    "coordinates": [
+      29.57,
+      35.42
+    ],
+    "slope": 9,
+    "ndvi": 0.03,
+    "soilType": "Arenisca",
+    "roughness": "Alta",
+    "referenceProfile": "campo-piedra-pomez"
+  },
+  {
+    "id": "namib",
+    "name": "Entorno de Sossusvlei",
+    "country": "Namibia",
+    "coordinates": [
+      -24.73,
+      15.3
+    ],
+    "slope": 18,
+    "ndvi": 0.01,
+    "soilType": "Arenoso",
+    "roughness": "Media",
+    "referenceProfile": "salar-arizaro"
+  },
+  {
+    "id": "rio-tinto",
+    "name": "Entorno de Río Tinto",
+    "country": "España",
+    "coordinates": [
+      37.7,
+      -6.6
+    ],
+    "slope": 10,
+    "ndvi": 0.22,
+    "soilType": "Mineralizado",
+    "roughness": "Media",
+    "referenceProfile": "campo-piedra-pomez"
+  },
+  {
+    "id": "bardenas",
+    "name": "Bardenas Reales",
+    "country": "España",
+    "coordinates": [
+      42.2,
+      -1.48
+    ],
+    "slope": 8,
+    "ndvi": 0.16,
+    "soilType": "Sedimentario",
+    "roughness": "Media",
+    "referenceProfile": "campo-piedra-pomez"
+  },
+  {
+    "id": "mcmurdo-valleys",
+    "name": "Valles Secos de McMurdo",
+    "country": "Antártida",
+    "coordinates": [
+      -77.5,
+      162
+    ],
+    "slope": 14,
+    "ndvi": 0,
+    "soilType": "Glacial",
+    "roughness": "Alta",
+    "referenceProfile": "llullaillaco"
+  },
+  {
+    "id": "lanzarote",
+    "name": "Entorno de Timanfaya",
+    "country": "España",
+    "coordinates": [
+      28.99,
+      -13.75
+    ],
+    "slope": 11,
+    "ndvi": 0.03,
+    "soilType": "Basáltico",
+    "roughness": "Alta",
+    "referenceProfile": "la-payunia"
+  }
+]

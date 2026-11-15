@@ -1,0 +1,30 @@
+import {generateContent} from './geminiClient.js';
+const STR={type:'STRING'};
+const DISCOVERY_SCHEMA={type:'OBJECT',required:['summary','places'],properties:{summary:STR,places:{type:'ARRAY',minItems:1,maxItems:6,items:{type:'OBJECT',required:['name','country','countryCode','region','latitude','longitude','rationale','reasonTitle','imageCaption','bestFor','accessCaveat'],properties:{name:STR,country:STR,countryCode:STR,region:STR,latitude:{type:'NUMBER'},longitude:{type:'NUMBER'},rationale:STR,reasonTitle:STR,imageCaption:STR,bestFor:STR,accessCaveat:STR}}}}};
+const attempts=new Map();
+function failure(message,status=502){return Object.assign(new Error(message),{status});}
+function bounded(value,max=300){if(typeof value!=='string'||!value.trim()||value.length>max)throw failure('El descubrimiento devolvió un nombre o argumento inválido.');return value.trim();}
+const SYSTEM=`Proponé a partir de tu conocimiento lugares terrestres concretos para preparar el ensayo solicitado. No selecciones puntos al azar ni maximices frío/viento sin considerar una campaña de campo. Proponé entre 4 y 6 lugares con nombre, país, provincia/estado si está documentado, coordenadas aproximadas y razones. Priorizá diversidad, posibilidad de organizar ensayos (sin afirmar acceso verificado), pertinencia del terreno y de la condición principal; no certifiques permisos ni seguridad. Para búsqueda global repartí candidatos entre al menos 3 países y regiones distintas cuando la evidencia lo permita; no agrupes todo en un país o continente. NO propongas Antártida ni latitudes al sur de -60 salvo includePolar=true. Respetá bounds=[oeste,sur,este,norte]. Los umbrales son objetivos que las APIs medirán después: NO inventes valores climáticos ni porcentajes de aptitud para hacerlos coincidir. Si un umbral parece extremo, proponé alternativas plausibles y explicá esa limitación. No tenés búsqueda web ni acceso a fuentes externas. No afirmes haber buscado o verificado sitios, acceso, nombres o condiciones actuales. No inventes enlaces ni bibliografía. Indicá incertidumbre en los argumentos y respondé brevemente. Salida exclusivamente JSON, sin Markdown: {summary:string,places:[{name:string,country:string,countryCode:string,region:string,latitude:number,longitude:number,rationale:string,reasonTitle:string,imageCaption:string,bestFor:string,accessCaveat:string}]}. rationale debe explicar por qué investigar este lugar para la misión, no afirmar que ya cumple. Esta es la ÚNICA solicitud al modelo de todo el flujo: incluí toda la argumentación inicial en rationale (hasta 650 caracteres), reasonTitle (hasta 70), bestFor (hasta 90) e imageCaption (hasta 140). El pie explica la localización de una vista satelital, sin afirmar haber visto la imagen. No inventes mediciones ni meses favorables: las APIs se consultan después y el cliente calculará la temporada. Las propuestas y argumentos se contrastarán después con datos de APIs. No son recomendaciones científicamente validadas.`;
+export function discoverPlaces(jobId,request,signal){
+ if(attempts.has(jobId))return attempts.get(jobId);
+ const promise=run(request,signal);attempts.set(jobId,promise);return promise;
+}
+async function run(request,signal){
+ const body={systemInstruction:{parts:[{text:SYSTEM}]},contents:[{role:'user',parts:[{text:JSON.stringify({mission:request.mission,objectives:request.objectives,focus:request.focus,criteria:request.criteria,month:request.month,bounds:request.bounds,includePolar:request.includePolar,maximumPlaces:6})}]}],generationConfig:{responseMimeType:'application/json',responseSchema:DISCOVERY_SCHEMA,maxOutputTokens:6144,thinkingConfig:{thinkingLevel:'low'}}};
+ const {data,model,inputBytes}=await generateContent({body,signal,maxInputBytes:16000});
+ const candidate=data.candidates?.[0];
+ if(candidate?.finishReason!=='STOP')throw failure('Gemini no completó el descubrimiento de lugares. No se reintentó.');
+ const raw=(candidate.content?.parts||[]).filter(p=>typeof p.text==='string'&&!p.thought).map(p=>p.text).join('').trim().replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'');
+ let output;try{output=JSON.parse(raw);}catch{throw failure('El descubrimiento no devolvió JSON válido. No se hizo otra llamada.');}
+ if(!Array.isArray(output.places)||!output.places.length||output.places.length>6)throw failure('Gemini no devolvió una lista válida de hasta seis lugares.');
+ const [west,south,east,north]=request.bounds,places=[],rejections=[];
+ for(const p of output.places){
+  const lat=p.latitude,lon=p.longitude;
+  if(!Number.isFinite(lat)||!Number.isFinite(lon)||lat<south||lat>north||lon<west||lon>east||(!request.includePolar&&lat< -60)){rejections.push({name:typeof p.name==='string'?p.name:'Propuesta',reason:'Fuera del área o de la política polar elegida.'});continue;}
+  const name=bounded(p.name,150),country=bounded(p.country,120),region=typeof p.region==='string'?p.region.slice(0,150):'';
+  if(places.some(other=>other.name.toLowerCase()===name.toLowerCase()||Math.hypot(other.latitude-lat,other.longitude-lon)<.05))continue;
+  places.push({name,country,countryCode:typeof p.countryCode==='string'&&/^[a-z]{2}$/i.test(p.countryCode)?p.countryCode.toUpperCase():null,region,latitude:lat,longitude:lon,rationale:bounded(p.rationale,900),reasonTitle:bounded(p.reasonTitle,130),imageCaption:bounded(p.imageCaption,300),bestFor:bounded(p.bestFor,180),accessCaveat:bounded(p.accessCaveat,600),sourceUrls:[],proposalStatus:'unverified-model-proposal',coordinateStatus:'Coordenada aproximada propuesta por Gemini; no polígono validado de ensayo'});
+ }
+ if(!places.length)throw failure('Las propuestas de Gemini quedaron fuera del área elegida. No se usó una malla como reemplazo.');
+ return {model,summary:bounded(output.summary,1200),places,rejections,mode:'model-proposals',grounded:false,sources:[],inputBytes,usage:data.usageMetadata||null,calls:1,createdAt:new Date().toISOString(),note:'Propuestas del modelo sin búsqueda web ni referencias verificadas. Las APIs contrastan después las condiciones y los límites administrativos, no el nombre exacto del sitio ni su acceso.'};
+}

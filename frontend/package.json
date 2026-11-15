@@ -1,0 +1,1 @@
+{"name":"astraanalog-frontend","version":"0.2.0","private":true,"type":"module","scripts":{"dev":"vite --host 127.0.0.1","build":"vite build"},"dependencies":{"astraanalog":"file:..","leaflet":"^1.9.4","react":"^19.0.0","react-dom":"^19.0.0","react-leaflet":"^5.0.0"},"devDependencies":{"@tailwindcss/vite":"^4.1.0","tailwindcss":"^4.1.0","vite":"^6.0.0"}}

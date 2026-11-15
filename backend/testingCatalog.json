@@ -1,0 +1,93 @@
+{
+  "dataStatus": "illustrative",
+  "tests": [
+    {
+      "id": "dust",
+      "name": "Polvo y viento",
+      "shortName": "Polvo",
+      "description": "Explorar candidatos para estudiar exposición de sensores y mecanismos a partículas transportadas por viento.",
+      "criteria": "Frecuencia y velocidad del viento, partículas suspendidas, tamaño de grano y visibilidad.",
+      "seasonEvidenceNeeded": "Series históricas locales de viento, polvo y visibilidad; frecuencia mensual y duración de eventos.",
+      "limitation": "Un terreno seco no demuestra que haya tormentas de arena. No se midieron eventos, granulometría ni similitud del polvo con regolito planetario."
+    },
+    {
+      "id": "traction",
+      "name": "Tracción y hundimiento",
+      "shortName": "Tracción",
+      "description": "Comparar candidatos para investigar deslizamiento de ruedas y avance sobre sustratos poco consolidados.",
+      "criteria": "Granulometría, capacidad portante, humedad, deslizamiento y profundidad de material suelto.",
+      "seasonEvidenceNeeded": "Humedad y precipitación estacionales, estado de costras y observaciones de capacidad portante.",
+      "limitation": "NDVI bajo y sustrato salino no certifican material suelto ni tránsito seguro. Se necesitan mediciones de suelo."
+    },
+    {
+      "id": "navigation",
+      "name": "Navegación y obstáculos",
+      "shortName": "Navegación",
+      "description": "Buscar escenarios conceptuales para percepción, detección de obstáculos y planificación de rutas.",
+      "criteria": "Tamaño y densidad de obstáculos, relieve local, textura visual y variedad de rutas.",
+      "seasonEvidenceNeeded": "Iluminación a la hora del ensayo, visibilidad, nieve y accesibilidad estacional.",
+      "limitation": "La rugosidad cualitativa del catálogo no describe obstáculos a escala de rover. No se certifica aptitud de navegación."
+    },
+    {
+      "id": "slopes",
+      "name": "Ascenso y estabilidad",
+      "shortName": "Pendientes",
+      "description": "Investigar candidatos para pruebas controladas de ascenso, descenso y estabilidad sobre terreno inclinado.",
+      "criteria": "Distribución local de pendientes, continuidad de rampas, adherencia y zonas de recuperación.",
+      "seasonEvidenceNeeded": "Estado estacional del suelo, nieve, hielo, viento y condiciones de acceso.",
+      "limitation": "Una pendiente mayor no implica un mejor ni más seguro ensayo. No hay evaluación de vuelco, adherencia ni zonas de recuperación."
+    },
+    {
+      "id": "cold",
+      "name": "Operación en frío",
+      "shortName": "Frío",
+      "description": "Explorar candidatos para investigar baterías, electrónica y mecanismos bajo temperaturas reducidas.",
+      "criteria": "Temperatura del aire y del equipo, ciclos térmicos, duración de exposición y logística.",
+      "seasonEvidenceNeeded": "Series de temperatura del aire, extremos nocturnos, viento y evaluación de acceso por estación.",
+      "limitation": "Altitud o apariencia del paisaje no bastan para caracterizar frío. No se reproduce vacío, gravedad ni radiación extraterrestres."
+    }
+  ],
+  "profiles": [
+    {
+      "siteId": "salar-arizaro",
+      "assessments": {
+        "dust": {"score": 88, "reason": "Escenario ilustrativo de exposición a polvo en una superficie abierta. No representa frecuencia de tormentas medida."},
+        "traction": {"score": 74, "reason": "Hipótesis de trabajo sobre costras y sustratos salinos; resistencia y profundidad sin medir."},
+        "navigation": {"score": 54, "reason": "Perfil demo con menor variedad de obstáculos; podría servir para navegación en espacios abiertos."},
+        "slopes": {"score": 22, "reason": "El escenario del catálogo representa una superficie de poca pendiente, con menor aporte al ensayo de ascenso."},
+        "cold": {"score": 69, "reason": "Potencial térmico supuesto para demostrar el planificador; no se dispone de observaciones de temperatura."}
+      }
+    },
+    {
+      "siteId": "campo-piedra-pomez",
+      "assessments": {
+        "dust": {"score": 72, "reason": "Supuesto de demostración para un entorno expuesto; la disponibilidad de eventos de polvo no está confirmada."},
+        "traction": {"score": 82, "reason": "Escenario conceptual de interacción con material piroclástico, sin caracterización mecánica del suelo."},
+        "navigation": {"score": 94, "reason": "Se asigna un potencial ilustrativo alto a la navegación entre formaciones y obstáculos; requiere cartografía de detalle."},
+        "slopes": {"score": 70, "reason": "El perfil demo supone relieves variados, sin inventario validado de rampas de ensayo."},
+        "cold": {"score": 65, "reason": "Valor sintético para contrastar prioridades; temperatura y ciclos térmicos pendientes de medición."}
+      }
+    },
+    {
+      "siteId": "la-payunia",
+      "assessments": {
+        "dust": {"score": 55, "reason": "Perfil sintético con menor contribución al ensayo de polvo; no equivale a ausencia de eventos reales."},
+        "traction": {"score": 78, "reason": "Escenario demo de tracción en sustrato volcánico, con propiedades mecánicas sin validar."},
+        "navigation": {"score": 90, "reason": "Hipótesis de mayor variedad de obstáculos y rutas; falta medir tamaños y densidades."},
+        "slopes": {"score": 87, "reason": "Se supone disponibilidad de relieves para ascenso; seguridad, continuidad y accesos no evaluados."},
+        "cold": {"score": 52, "reason": "Valor sintético de contraste, no derivado de registros meteorológicos."}
+      }
+    },
+    {
+      "siteId": "llullaillaco",
+      "assessments": {
+        "dust": {"score": 61, "reason": "Escenario hipotético de viento y partículas; no hay una serie local de eventos incorporada."},
+        "traction": {"score": 58, "reason": "El escenario de alta montaña añade restricciones; el puntaje no mide capacidad portante ni adherencia."},
+        "navigation": {"score": 73, "reason": "Potencial ilustrativo de navegación en relieve irregular, sin inventario de obstáculos."},
+        "slopes": {"score": 93, "reason": "Mayor potencial demo para terreno inclinado; no se afirma que la zona sea segura o accesible."},
+        "cold": {"score": 96, "reason": "Puntaje sintético para demostrar un especialista térmico; no se infieren temperaturas concretas por altitud."}
+      }
+    }
+  ],
+  "methodNote": "Todos los puntajes de ensayo fueron asignados manualmente para demostrar el flujo; no derivan del NDVI, de mediciones físicas ni de meteorología. No son recomendaciones operativas. Ningún sitio tiene una ventana estacional validada en esta versión."
+}
