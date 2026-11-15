@@ -2,6 +2,8 @@
 
 ![](Media/Certificado.jpeg)
 
+## Demo
+
 [▶ Ver el video demo](Media/AstraAnalog%20%C2%B7%20Demo.mp4)
 
 **Demo de duración breve**, preparado en este formato para ajustarse a los requisitos de presentación de la entrega del evento NASA Space Apps Challenge.
